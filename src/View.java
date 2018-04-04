@@ -12,4 +12,8 @@ public class View {
         model = m;
         controller = c;
     }
+
+    public void drawPlot(double[] x, double[] y){
+
+    }
 }

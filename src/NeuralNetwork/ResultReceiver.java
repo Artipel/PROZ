@@ -2,19 +2,11 @@ package NeuralNetwork;
 
 public class ResultReceiver extends Neuron {
 
-    public ResultReceiver(int inputCount){
-        inputs = inputCount;
-        inputsReceived = 0;
-        inputsSum = 0.0;
-    }
-
-    public void receiveInput(double d){
-        ++inputsReceived;
-        inputsSum =+ d;
-        if(inputsReceived == inputs){
-            output = computeOutput();
-            inputsReceived = 0;
-        }
+    public ResultReceiver(Neuron[] inputs){
+        sf = new Linear();
+        inputNeurons = inputs;
+        synaps = new double[inputs.length];
+        pickInitialWeights();
     }
 
     protected double computeOutput(){
@@ -23,6 +15,10 @@ public class ResultReceiver extends Neuron {
 
     public double getOutput(){
         return output;
+    }
+
+    protected void pickInitialWeights(){
+        super.pickInitialWeights();
     }
 
 }

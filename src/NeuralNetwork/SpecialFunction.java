@@ -1,15 +1,11 @@
 package NeuralNetwork;
 
-public class SpecialFunction {
+public abstract class SpecialFunction  {
 
     public SpecialFunction(){}
 
-    public static double function(double a){
-        return 1.0/(1+Math.pow(Math.E, -a));
-    }
+    public abstract double function(double a);
 
-    public static double derivative(double a){
-        return Math.pow(Math.E, -a)/(Math.pow(1+Math.pow(Math.E, -a), 2));
-    }
+    public abstract double derivative(double a);
 
 }
