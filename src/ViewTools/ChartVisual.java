@@ -4,6 +4,9 @@ import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
 import org.jfree.data.xy.DefaultXYDataset;
 
+/**
+ * Class to makse 2D Charts for drawing approximation and errors.
+ */
 public class ChartVisual {
     private JFreeChart chart;
 
@@ -11,6 +14,9 @@ public class ChartVisual {
         return chart;
     }
 
+    /**
+     * creates examplary chart
+     */
     public void createChart() {
         DefaultXYDataset dataset = new DefaultXYDataset();
         double[][] data = new double[2][3];
@@ -25,6 +31,14 @@ public class ChartVisual {
 
     }
 
+    /**
+     * Creates chart with two data series, designed to make approximation chart
+     * @param title title of a chart
+     * @param x axis name
+     * @param y axis name
+     * @param values approximated data series values
+     * @param expectedValues expected values of function
+     */
     public void createChart(String title, String x, String y, double[][] values, double[][] expectedValues) {
         DefaultXYDataset dataset = new DefaultXYDataset();
         dataset.addSeries("Approximation", values);
@@ -32,6 +46,11 @@ public class ChartVisual {
         chart = ChartFactory.createXYLineChart(title, x, y, dataset);
     }
 
+    /**
+     * Creates chart of MSE value
+     * @param errors array of errors
+     * @param numberOfEpochs horizontal axis scale
+     */
     public void createErrorsChart(double[] errors, int numberOfEpochs) {
         double[][] values = new double[2][errors.length];
         for (int i = 0; i < values[0].length; i++) {

@@ -5,15 +5,34 @@ import java.util.Random;
 
 public class Network {
 
-    private Neuron[] inputNeurons;
-    private Neuron[] outputNeurons;
-    private Neuron[][] computingNeurons;
+    protected Neuron[] inputNeurons;
+    protected Neuron[] outputNeurons;
+    protected Neuron[][] computingNeurons;
+
+    public double getLearningRate() {
+        return learningRate;
+    }
+
+    public double getMomentum() {
+        return momentum;
+    }
 
     private double learningRate = 0.1;
     private double momentum = 0.1;
-    private double[][][] previousCorrection;
+    protected double[][][] previousCorrection;
 
     private int bias;
+
+    public Network() {
+    }
+
+    public void setLearningRate(double learningRate) {
+        this.learningRate = learningRate;
+    }
+
+    public void setMomentum(double momentum) {
+        this.momentum = momentum;
+    }
 
     /**
      * Creates perceptron with defined number of neurons on input layer, hidden layers are described by the array, output layer is described by the number.
@@ -123,7 +142,7 @@ public class Network {
      * @param computingNeuronFx type of a function in hidden layer
      * @param outputNeuronFx type of a function in output layer
      */
-    private void createSynaps(SpecialFunction computingNeuronFx, SpecialFunction outputNeuronFx){
+    protected void createSynaps(SpecialFunction computingNeuronFx, SpecialFunction outputNeuronFx){
         if(bias==0) {
             for (int j = 0; j < inputNeurons.length; j++) {
                 inputNeurons[j] = new InputCollector();
@@ -307,7 +326,7 @@ public class Network {
         for(int i = 0; i < derivatives.length; ++i)
             for(int j = 0; j < derivatives[i].length; ++j)
                 for(int k = 0; k < derivatives[i][j].length; ++k)
-                    derivatives[i][j][k] = correctionCoefficients[i][j] * computingNeurons[i][j].inputNeurons[k].getOutput();
+                    derivatives[i][j][k] = correctionCoefficients[i][j] * computingNeurons[i][j].activationDerivative(k);
         return derivatives;
     }
 
@@ -324,7 +343,7 @@ public class Network {
         for(int i = 0; i < derivatives.length; ++i)
             for(int j = 0; j < derivatives[i].length; ++j)
                 for(int k = 0; k < derivatives[i][j].length; ++k)
-                    derivatives[i][j][k] = correctionCoefficients[i][j] * computingNeurons[i][j].inputNeurons[k].getOutput();
+                    derivatives[i][j][k] = correctionCoefficients[i][j] * computingNeurons[i][j].activationDerivative(k);
         return derivatives;
     }
 
@@ -460,6 +479,16 @@ public class Network {
         }
     }
 
+    public void learnOneEpochOnlinePermuted(double[][] input, double[][] output){
+        int[] permutation = generatePermutation(input.length);
+        for (int trainingCase = 0; trainingCase < input.length; trainingCase++) {
+            double[][][] gradient = getPartialDerivatives(input[permutation[trainingCase]], output[permutation[trainingCase]]);
+            double[][][] synaps = getSynapsNetwork();
+            makeCorrection(gradient, synaps);
+            setWeights(synaps);
+        }
+    }
+
     /**
      * learns  offline as long as sum of errors is not lower then given value
      * @param input set of training inputs
@@ -502,7 +531,7 @@ public class Network {
      * @param n the biggest number in a set starting from 0.
      * @return permutated array of integers
      */
-    private int[] generatePermutation(int n){
+    protected int[] generatePermutation(int n){
         int[] array = new int[n];
         for (int i = 0; i < n; i++) {
             array[i] = i;

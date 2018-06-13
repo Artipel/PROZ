@@ -1,5 +1,8 @@
 package NeuralNetwork;
 
+/**
+ * Output neuron
+ */
 public class ResultReceiver extends Neuron {
 
     public ResultReceiver(Neuron[] inputs){

@@ -1,22 +1,23 @@
 import NeuralNetwork.Network;
+import NeuralNetwork.RBFNetworkClassificator;
 import NeuralNetwork.Settings;
 
-public class Task3 {
+public class Task32 {
     public static void main(String[] args) {
 
-        final int sampleSize = 25, numberOfEpochs = 1000;
+        final int sampleSize = 5, numberOfEpochs = 500;
         final int numberOfTrainingCases = 90;
         final int inputSize = 4;
         final int outputSize = 3;
         final int testSize = 93;
         final double learnignRate = 0.1;
         final double momentum = 0.1;
-        final boolean bias = true;
-        Settings[] settings = new Settings[4];
-        settings[0] = new Settings(inputSize, new int[]{4}, outputSize, bias, 1, 1, learnignRate, momentum);
-        settings[1] = new Settings(inputSize, new int[]{8}, outputSize, bias, 1, 1, learnignRate, momentum);
-        settings[2] = new Settings(inputSize, new int[]{12}, outputSize, bias, 1, 1, learnignRate, momentum);
-        settings[3] = new Settings(inputSize, new int[]{16}, outputSize, bias, 1, 1, learnignRate, momentum);
+        final boolean bias = false;
+        Settings[] settings = new Settings[3];
+        settings[0] = new Settings(inputSize, new int[]{5}, outputSize, bias, 1, 1, learnignRate, momentum);
+        settings[1] = new Settings(inputSize, new int[]{10}, outputSize, bias, 1, 1, learnignRate, momentum);
+        settings[2] = new Settings(inputSize, new int[]{15}, outputSize, bias, 1, 1, learnignRate, momentum);
+        //settings[3] = new Settings(inputSize, new int[]{16}, outputSize, bias, 1, 1, learnignRate, momentum);
 
         String codeS = "1111";
         boolean[] code = new boolean[4];
@@ -27,7 +28,7 @@ public class Task3 {
                 code[i] = false;
         }
         String inputFilename = "data/classification_train.txt",
-                outputFilename = "data/classification/classificationPrim"+codeS,
+                outputFilename = "data/classification2/classification5samples"+codeS,
                 testFilename = "data/classification_test.txt";
 
         double[][] trainingInput = new double[numberOfTrainingCases][inputSize];
@@ -56,7 +57,7 @@ public class Task3 {
 
 
         for(int setNum = 0; setNum < settings.length; ++setNum) {
-            networks = createSampleOfNetworks(settings[setNum], sampleSize);
+            networks = createSampleOfNetworks(settings[setNum], sampleSize, trainingInput);
             for (int i = 0; i < numberOfEpochs; i++) {
                 for (int j = 0; j < networks.length; j++) {
                     networks[j].learnOneEpochOnline(trainingInput, expectedTrainingOutput);
@@ -84,6 +85,7 @@ public class Task3 {
                 numberOfCorrectAnswersForOneSample[i] /= expectedTestOutput.length;
             }
 
+
             numberOfCorrectAnswers[setNum] = Statistics.mean(numberOfCorrectAnswersForOneSample);
             deviationNumberOfCorrectAnswers[setNum] = Statistics.standardDeviation(numberOfCorrectAnswersForOneSample);
             numberOfCorrectAnswersForOneSample = new double[sampleSize];
@@ -106,10 +108,10 @@ public class Task3 {
 
     }
 
-    private static Network[] createSampleOfNetworks(Settings settings, int n){
+    private static Network[] createSampleOfNetworks(Settings settings, int n, double[][] trainInput){
         Network[] networks = new Network[n];
         for (int i = 0; i < networks.length; i++) {
-            networks[i] = new Network(settings);
+            networks[i] = new RBFNetworkClassificator(settings, trainInput);
         }
         return networks;
     }
@@ -117,7 +119,7 @@ public class Task3 {
     //private static double numberOfCorrectClassifications(double[][] expectedOutput, )
 
     private static int classification(double[] output){
-        double max = -1;
+        double max = -Double.MAX_VALUE;
         int candidate = -1;
         for (int i = 0; i < output.length; i++) {
             if(output[i] > max) {
@@ -125,7 +127,9 @@ public class Task3 {
                 candidate = i;
             }
         }
+        if(candidate == -1){
+            System.out.println("WRONG CANDIDATE");
+        }
         return candidate;
     }
-
 }

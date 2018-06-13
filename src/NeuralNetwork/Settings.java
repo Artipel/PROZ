@@ -1,5 +1,8 @@
 package NeuralNetwork;
 
+/**
+ * Set of parameters that defines network
+ */
 public class Settings {
 
     public int inputN, outputN, computingFx, outputFx;

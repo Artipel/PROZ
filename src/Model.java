@@ -1,7 +1,8 @@
+import NeuralNetwork.Linear;
 import NeuralNetwork.Network;
+import NeuralNetwork.RBFNetwork;
 import NeuralNetwork.Settings;
 
-import java.util.Arrays;
 import java.util.Vector;
 
 public class Model {
@@ -93,7 +94,13 @@ public class Model {
      * @param type2 type of a function in output layer
      */
     public void createNetwork(int in, int com[], int out, boolean b, int type1, int type2){
+
         network = new Network(in, com, out, b, type1, type2,0.1,0.1);
+    }
+
+    public void createRBFNetwork(int in, int com[], int out, double learningRate, double momentum){
+        errors = new Vector<Double>();
+        network = new RBFNetwork(in, com[0], out, learningRate, new Linear());
     }
 
     /**

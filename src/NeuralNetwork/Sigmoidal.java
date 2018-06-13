@@ -1,5 +1,8 @@
 package NeuralNetwork;
 
+/**
+ * Function: 1/(1+e^x)
+ */
 public class Sigmoidal extends SpecialFunction {
 
     public double function(double a){

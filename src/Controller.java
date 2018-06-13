@@ -33,6 +33,24 @@ public class Controller {
                 double learningRate = view.getLearningRate()/100.0;
                 double momentum = view.getMomentum()/100.0;
                 model.createNetwork(layers, learningRate, momentum);
+                //model.createRBFNetwork(layers[0], new int[]{layers[1]}, layers[2]);
+                view.updateGraphics(model.getNetwork());
+                view.drawErrorsChart(new double[]{0,0}, 2000);
+                if(model.isReady()) {
+                    view.setStatus("ready");
+                    view.drawApproximationChart(model.getLinearSpaceApproximation(100), model.getTrainingData2D());
+                }
+            }
+        });
+
+        view.addActionListenerToCreateRBFNetworkButton(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String data = view.getInputFieldData();
+                int[] layers = parseStringToIntArray(data);
+                double learningRate = view.getLearningRate()/100.0;
+                double momentum = view.getMomentum()/100.0;
+                model.createRBFNetwork(layers[0], new int[]{layers[1]}, layers[2], learningRate, momentum);
                 view.updateGraphics(model.getNetwork());
                 view.drawErrorsChart(new double[]{0,0}, 2000);
                 if(model.isReady()) {

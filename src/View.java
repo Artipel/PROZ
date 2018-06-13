@@ -32,6 +32,7 @@ public class View {
     private JLabel topLabel;
     private JTextField setupField;
     private JButton createNetworkButton;
+    private JButton createRBFNetworkButton;
 
     private JPanel leftPanel;
     private JLabel leftLabel;
@@ -121,9 +122,11 @@ public class View {
         topLabel = new JLabel("Define number of neurons in layers");
         setupField = new JTextField("1 4 1", 10);
         createNetworkButton = new JButton("Create network!");
+        createRBFNetworkButton = new JButton("Create RBF network");
         topPanel.add(topLabel);
         topPanel.add(setupField);
         topPanel.add(createNetworkButton);
+        topPanel.add(createRBFNetworkButton);
         //topPanel.setSize(800, 40);
         topPanel.setBorder(BorderFactory.createLineBorder(Color.darkGray));
         topPanel.setAlignmentY(0);
@@ -313,6 +316,9 @@ public class View {
         pickFileButton.addActionListener(actionListener);
     }
 
+    public void addActionListenerToCreateRBFNetworkButton(ActionListener actionListener){
+        createRBFNetworkButton.addActionListener(actionListener);
+    }
     /**
      *
      * @return a string which defines layers of network

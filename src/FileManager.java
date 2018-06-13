@@ -257,6 +257,12 @@ public class FileManager {
         return arr;
     }
 
+    /**
+     * Saves predefined chart to file
+     * @param errors MSE values
+     * @param settings description of neuron network
+     * @param filename output filename
+     */
     public static void saveGraph(double[][] errors, Settings settings, String filename){
 
         XYIntervalSeriesCollection sCollection = new XYIntervalSeriesCollection();
@@ -303,6 +309,14 @@ public class FileManager {
         }
     }
 
+    /**
+     * Saves predefined chart with interval renderer
+     * @param errors value of mse
+     * @param deviations standard deviations of errors
+     * @param settings description of network
+     * @param filename output filename
+     * @param rangeLimit limit of a y axis
+     */
     public static void saveGraph(double[][] errors, double[][] deviations, Settings[] settings, String filename, double rangeLimit){
 
         XYIntervalSeriesCollection sCollection = new XYIntervalSeriesCollection();
@@ -363,11 +377,11 @@ public class FileManager {
         //data.addValue((Number)0.1, 0, 1);
 
         JFreeChart chart = ChartFactory.createBarChart("Accuracy", "Number of neurons", "Accuracy", dataset);
-        chart.getCategoryPlot().getRangeAxis().setRange(0.0, range);
+        chart.getCategoryPlot().getRangeAxis().setRange(0.75, range);
 
         try {
 
-            OutputStream out = new FileOutputStream(filename + ".png");
+            OutputStream out = new FileOutputStream(filename + "ind_"+settings[0].bias+".png");
             ChartUtilities.writeChartAsPNG(out,
                     chart,
                     400,
@@ -426,6 +440,12 @@ public class FileManager {
         }
     }
 
+    /**
+     * Saves two arrays to csv file separeted by |
+     * @param array of double to be saved
+     * @param secondArray array as a header
+     * @param filename output filename
+     */
     public static void saveToCSV(double[][] array, double[] secondArray, String filename){
         PrintWriter out = null;
         try{
@@ -461,6 +481,11 @@ public class FileManager {
         }
     }
 
+    /**
+     * Saves array to csv separated by |
+     * @param array to be saved
+     * @param filename output filename
+     */
     public static void saveToCSV(double[][] array, String filename){
         PrintWriter out = null;
         try{
@@ -490,6 +515,11 @@ public class FileManager {
         }
     }
 
+    /**
+     * Saves predefined chart for approximation
+     * @param seriesCollection data seris to be drawn on a chart
+     * @param s filename
+     */
     public static void saveApproximationGraph(XYSeriesCollection seriesCollection, String s) {
         JFreeChart chart = ChartFactory.createXYLineChart("aproksymacja funkcji przez najlepsze z sieci", "x", "y", seriesCollection);
         XYItemRenderer renderer = chart.getXYPlot().getRenderer();

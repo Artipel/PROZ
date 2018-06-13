@@ -4,6 +4,9 @@ import NeuralNetwork.Network;
 import com.mxgraph.util.mxRectangle;
 import com.mxgraph.view.mxGraph;
 
+/**
+ * Creates a graph that represents network
+ */
 public class GraphVisual {
     /**
      * Graph must be prior created with method
@@ -58,7 +61,6 @@ public class GraphVisual {
 
         initializeEdgesSynaps();
 
-
         graph.getModel().beginUpdate();
         try
         {
@@ -100,7 +102,8 @@ public class GraphVisual {
                         vertexx/2,
                         vertexy/2,
                         shape);
-                edgesSynaps[i-1][j][edgesSynaps[i-1][j].length-1] = graph.insertEdge(parent, null, "", biasNode, neurons[j],
+                edgesSynaps[i-1][j][edgesSynaps[i-1][j].length-1] = graph.insertEdge(parent, null, "" + String.format("%.2f", synaps[i-1][j][synaps[i-1][j].length-1]),
+                        biasNode, neurons[j],
                         "strokeColor="+hexColor(synaps[i-1][j][synaps[i-1][j].length-1]));
             }
         }
@@ -131,7 +134,8 @@ public class GraphVisual {
     private void connectLayers(int numberOfFirstLayer, int numberOfSecondLayer, Object parent){
         for (int i = 0; i < verticesNeurons[numberOfFirstLayer].length; i++) {
             for (int j = 0; j < verticesNeurons[numberOfSecondLayer].length; j++) {
-                edgesSynaps[numberOfSecondLayer-1][j][i] = graph.insertEdge(parent, null, "", verticesNeurons[numberOfFirstLayer][i],
+                edgesSynaps[numberOfSecondLayer-1][j][i] = graph.insertEdge(parent, null, "" + String.format("%.2f", synaps[numberOfSecondLayer-1][j][i]),
+                        verticesNeurons[numberOfFirstLayer][i],
                     verticesNeurons[numberOfSecondLayer][j], "strokeColor="+hexColor(synaps[numberOfSecondLayer-1][j][i]));
             }
         }
